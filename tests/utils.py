@@ -66,10 +66,6 @@ def bake_in_temp_dir(cookies: Cookies, *args, **kwargs):
         overwrite_if_exists=True,
     )
 
-    import os
-
-    print(os.listdir(result.project_path))
-
     # Check for error, yield the result on success and clean-up afterward
     if not result.project_path:
         raise OSError("Could not bake project.")
