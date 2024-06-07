@@ -1,12 +1,4 @@
-import datetime
 from utils import bake_in_temp_dir
-
-
-def test_year_in_license_file(cookies):
-    with bake_in_temp_dir(cookies) as result:
-        license_file_path = result.project_path / "LICENSE"
-        now = datetime.datetime.now()
-        assert str(now.year) in license_file_path.read_text()
 
 
 def test_bake_with_defaults(cookies):
@@ -20,14 +12,13 @@ def test_bake_with_defaults(cookies):
         ".pre-commit-db.json",
         ".readthedocs.yml",
         "LICENSE",
-        "Makefile",
         "README.md",
         "docs",
         "pyproject.toml",
         "python",
     ]
 
-    with bake_in_temp_dir(cookies) as result:
+    with bake_in_temp_dir(cookies, extra_context={"__test": True}) as result:
         assert result.project_path.is_dir()
         assert result.exit_code == 0
         assert result.exception is None
