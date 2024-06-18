@@ -1,4 +1,4 @@
-import {{cookiecutter.__package_name}} as pkg
+import {{cookiecutter | package_name}} as pkg
 from math import isqrt
 
 

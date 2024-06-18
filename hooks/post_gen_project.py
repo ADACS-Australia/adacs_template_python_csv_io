@@ -1,8 +1,35 @@
 import subprocess
+import tomlkit
 
 # Rich is a cookiecutter dependency, so these should be safe here
 from rich.console import Console
 from rich.markdown import Markdown
+
+def update_pyproject_toml() -> None:
+    """ Add an entry of the form:
+    [tool.poetry.scripts]
+    my_exe_name = "my_package_name.cli:cli"
+    """
+
+    # Read pyproject.toml file
+    with open("pyproject.toml", "r") as fp:
+        pyproject_toml = tomlkit.load(fp)
+
+    # Add CLI item to tool.poetry.scripts
+    key = "{{ cookiecutter | package_name }}"
+    val = "{{ cookiecutter | package_name }}.cli:cli"
+    if not pyproject_toml['tool']['poetry']['scripts']:
+        tab = tomlkit.table()
+        tab.add(key, val)
+        pyproject_toml['tool']['poetry']['scripts'] = tab
+    else:
+        pyproject_toml['tool']['poetry']['scripts'][key] = val
+
+    # Re-write pyproject.toml file
+    with open("pyproject.toml", "w") as fp:
+        tomlkit.dump(pyproject_toml, fp)
+
+    pass
 
 
 def print_instructions() -> None:
@@ -26,8 +53,5 @@ def print_instructions() -> None:
 
 
 if __name__ == "__main__":
-    {% raw %}
-    # venv("{{ cookiecutter.virtual_environment }}")
-    # install("{{ cookiecutter.virtual_environment }}")
-    {% endraw %}
+    update_pyproject_toml()
     print_instructions()

@@ -3,7 +3,7 @@ import click
 import importlib.metadata
 import collections
 
-import {{cookiecutter.__package_name}}.files as files
+import {{cookiecutter | package_name}}.files as files
 
 
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
@@ -28,10 +28,10 @@ class _OrderedGroup(click.Group):
 
 
 @click.group(cls=_OrderedGroup, context_settings=CONTEXT_SETTINGS)
-@click.version_option(importlib.metadata.version("{{cookiecutter.__package_name}}"))
+@click.version_option(importlib.metadata.version("{{cookiecutter | package_name}}"))
 @click.pass_context
 def cli(ctx: click.core.Context) -> None:
-    """Run code from the {{cookiecutter.__package_name}} package."""
+    """Run code from the {{cookiecutter | package_name}} package."""
 
     # ensure that ctx.obj exists and is a dict (in case `cli()` is called
     # by means other than the `if` block below)

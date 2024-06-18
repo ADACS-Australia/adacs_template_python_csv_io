@@ -29,7 +29,6 @@ def test_bake_with_defaults(cookies):
         found_toplevel_pathnames = set()
         root_dir = result.project_path
         git_path = root_dir / ".git"
-        print("F:", git_path)
         for path_i in root_dir.rglob("*"):
             if git_path not in path_i.parents:
                 found_toplevel_pathnames.add(path_i)

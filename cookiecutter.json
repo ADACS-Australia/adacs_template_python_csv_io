@@ -1,29 +1,18 @@
 {
-    "project_name":"Short Project Name",
-    "__project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
-    "__package_name": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
-    "description":"Short project description",
-    "author":"Package, Author",
-    "github_login":"github_login",
-    "github_repo":"repo_name",
-    "rtd_project_name":"readthedocs_project_name",
+    "repo_path":"repo_path",
     "__test": false,
     "_copy_without_render": [
         "*_t"
     ],
     "_extensions": [
+        "local_extensions.ParsePathExtension",
         "local_extensions.CurrentYearExtension",
         "local_extensions.UnderlineExtension",
         "local_extensions.PascalCaseExtension",
         "local_extensions.EscapeQuotes"
     ],
     "__prompts__": {
-        "project_name":            "Give a short project name      :",
-        "description":             "Give a short/punchy description:",
-        "author":                  "Who is the project author?     :",
-        "github_login":            "What login will host the GitHub repo?:",
-        "github_repo":             "What will the GitHub repo's name be? :",
-        "readthedocs_project_name":"What is the Readthedocs project name?:"
+        "repo_path": "Give the path to the repo you are adding to :"
     },
     "_jinja2_env_vars": {"lstrip_blocks": true, "trim_blocks": true}
 }

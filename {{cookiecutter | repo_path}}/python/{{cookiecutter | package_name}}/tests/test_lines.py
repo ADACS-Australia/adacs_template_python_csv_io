@@ -1,4 +1,4 @@
-import {{cookiecutter.__package_name}}.lines as lines
+import {{cookiecutter | package_name}}.lines as lines
 import pytest
 from typing import Any, List, Tuple
 

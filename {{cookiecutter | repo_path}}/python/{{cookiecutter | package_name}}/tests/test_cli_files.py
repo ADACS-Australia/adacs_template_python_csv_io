@@ -1,5 +1,5 @@
-import {{cookiecutter.__package_name}}.cli as cli
-import {{cookiecutter.__package_name}}.files as files
+import {{cookiecutter | package_name}}.cli as cli
+import {{cookiecutter | package_name}}.files as files
 import filecmp
 from os.path import isfile
 from click.testing import CliRunner

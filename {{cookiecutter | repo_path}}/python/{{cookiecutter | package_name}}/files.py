@@ -1,5 +1,5 @@
-import {{cookiecutter.__package_name}} as pkg
-import {{cookiecutter.__package_name}}.lines as lines
+import {{cookiecutter | package_name}} as pkg
+import {{cookiecutter | package_name}}.lines as lines
 import os
 from pathlib import Path
 from typing import List

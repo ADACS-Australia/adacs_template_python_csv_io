@@ -1,4 +1,4 @@
-import {{cookiecutter.__package_name}}.files as files
+import {{cookiecutter | package_name}}.files as files
 import pytest
 import stat
 import os
@@ -54,7 +54,7 @@ def test_files_create_file_invalid_line(tmp_path: Path, mocker: MockerFixture) -
         Fixture used to patch create_line
     """
     for ex_expected in [TypeError, ValueError]:
-        mocker.patch("{{cookiecutter.__package_name}}.lines.create_line", side_effect=ex_expected)
+        mocker.patch("{{cookiecutter | package_name}}.lines.create_line", side_effect=ex_expected)
         with pytest.raises(files.CreateFileError):
             files.create_file(tmp_path / "test")
 
