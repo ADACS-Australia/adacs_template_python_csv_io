@@ -1,3 +1,5 @@
+import fileinput
+import os
 import subprocess
 import tomlkit
 
@@ -5,8 +7,9 @@ import tomlkit
 from rich.console import Console
 from rich.markdown import Markdown
 
+
 def update_pyproject_toml() -> None:
-    """ Add an entry of the form:
+    """ Add to the pyproject.toml file an entry of the form:
     [tool.poetry.scripts]
     my_exe_name = "my_package_name.cli:cli"
     """
@@ -18,7 +21,7 @@ def update_pyproject_toml() -> None:
     # Add CLI item to tool.poetry.scripts
     key = "{{ cookiecutter | package_name }}"
     val = "{{ cookiecutter | package_name }}.cli:cli"
-    if not pyproject_toml['tool']['poetry']['scripts']:
+    if not 'scripts' in pyproject_toml['tool']['poetry'].keys():
         tab = tomlkit.table()
         tab.add(key, val)
         pyproject_toml['tool']['poetry']['scripts'] = tab
@@ -32,9 +35,22 @@ def update_pyproject_toml() -> None:
     pass
 
 
-def print_instructions() -> None:
+def update_documentation() -> None:
+   """Add an entry to the documentation index.rst for the cli.rst content we are adding"""
 
+   # Seatch to the place we want to add content.
+   with fileinput.input(files="{{cookiecutter | repo_path}}/docs/index.rst", inplace=True) as file:
+       for line_in in file:
+           if line_in.startswith("   Home <self>"):
+               line_out = line_in + "   CLI Documentation <content/cli.rst>" + os.linesep
+           else:
+               line_out = line_in
+           print(line_out, end='')
+
+
+def print_instructions() -> None:
     """Print instructions about how to configure the rendered project for use"""
+
     # Read the instructions file, ignoring lines that start with '***'
     with open("INSTRUCTIONS.template", "r") as file:
 
@@ -54,4 +70,5 @@ def print_instructions() -> None:
 
 if __name__ == "__main__":
     update_pyproject_toml()
+    update_documentation()
     print_instructions()
