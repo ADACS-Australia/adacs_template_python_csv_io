@@ -92,8 +92,6 @@ class ParsePathExtension(Extension):
 
             return meta.package_name
 
-            return package_name
-
         environment.filters.update({"repo_path": repo_path})
         environment.filters.update({"repo_name": repo_name})
         environment.filters.update({"package_name": package_name})
