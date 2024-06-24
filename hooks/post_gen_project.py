@@ -19,7 +19,7 @@ class DocsUpdateException(Exception):
         return f"{self._message}"
 
 
-def update_pyproject_toml() -> None:
+def update_pyproject_toml(destination_table: List, key: str,val: str) -> None:
     """ Add to the pyproject.toml file an entry of the form:
     [tool.poetry.scripts]
     my_exe_name = "my_package_name.cli:cli"
@@ -29,15 +29,17 @@ def update_pyproject_toml() -> None:
     with open("pyproject.toml", "r") as fp:
         pyproject_toml = tomlkit.load(fp)
 
-    # Add CLI item to tool.poetry.scripts
-    key = "{{ cookiecutter | package_name }}"
-    val = "{{ cookiecutter | package_name }}.cli:cli"
-    if not 'scripts' in pyproject_toml['tool']['poetry'].keys():
-        tab = tomlkit.table()
-        tab.add(key, val)
-        pyproject_toml['tool']['poetry']['scripts'] = tab
-    else:
-        pyproject_toml['tool']['poetry']['scripts'][key] = val
+    # Make sure the destination table exists
+    check_table = pyproject_toml
+    for level in destination_table:
+        if not level in check_table.keys():
+            tab = tomlkit.table()
+            tab.add(key, val)
+            check_table[level] = tab
+        check_table = check_table[level]
+
+    # Add the entry
+    check_table[key] = val
 
     # Re-write pyproject.toml file
     with open("pyproject.toml", "w") as fp:
@@ -149,6 +151,8 @@ def print_instructions() -> None:
 
 
 if __name__ == "__main__":
-    update_pyproject_toml()
+    update_pyproject_toml(['tool','poetry','scripts'], 
+                          "{{ cookiecutter | package_name }}",
+                          "{{ cookiecutter | package_name }}.cli:cli")
     add_entry_to_docs_toc("CLI Documentation <content/cli.rst>")
     print_instructions()
