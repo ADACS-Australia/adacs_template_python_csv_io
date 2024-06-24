@@ -4,7 +4,7 @@ import pathlib
 
 def test_bake_with_defaults(cookies):
 
-    with bake_in_temp_dir(cookies, extra_context={"__test": True}) as result:
+    with bake_in_temp_dir(cookies) as result:
         assert result.project_path.is_dir()
         assert result.exit_code == 0
         assert result.exception is None
@@ -13,19 +13,21 @@ def test_bake_with_defaults(cookies):
 
         # Filenames from base template
         package_name = result.context["__package_name"]
+        check_toplevel_pathnames_base = [
+            ".git",
+            "pyproject.toml",
+            "docs/index.rst",
+            f"python/{package_name}/__init__.py",
+        ]
+
+        # Filenames from base template
         check_toplevel_pathnames_template = [
             f"python/{package_name}/cli.py",
             f"python/{package_name}/files.py",
             f"python/{package_name}/lines.py",
         ]
 
-        # Filenames from base template
-        check_toplevel_pathnames_base = [
-            ".git",
-            "pyproject.toml",
-            "python",
-        ]
-
+        # Get a list of paths in the project, excluding those that are within the git directory
         found_toplevel_pathnames = set()
         root_dir = result.project_path
         git_path = root_dir / ".git"
