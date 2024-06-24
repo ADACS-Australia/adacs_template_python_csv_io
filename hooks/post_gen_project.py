@@ -35,17 +35,49 @@ def update_pyproject_toml() -> None:
     pass
 
 
-def update_documentation() -> None:
-   """Add an entry to the documentation index.rst for the cli.rst content we are adding"""
+def add_entry_to_docs_toc(entry: str) -> None:
+    """Add an entry to the documentation index.rst for the cli.rst content we are adding"""
 
-   # Seatch to the place we want to add content.
-   with fileinput.input(files="{{cookiecutter | repo_path}}/docs/index.rst", inplace=True) as file:
-       for line_in in file:
-           if line_in.startswith("   Home <self>"):
-               line_out = line_in + "   CLI Documentation <content/cli.rst>" + os.linesep
-           else:
-               line_out = line_in
-           print(line_out, end='')
+
+    def indent_entry(indent:int) -> str:
+        return " "*indent + entry
+
+    # Re-write the index.rst file with the given line added
+    with fileinput.input(files="{{cookiecutter | repo_path}}/docs/index.rst", inplace=True) as file:
+        flag_toc_found = False
+        flag_options_done = False
+        flag_update_done = False
+        indent = 0
+        for i_line, line_in in enumerate(file):
+            line_in_strip = line_in.strip()
+            line_in_lstrip = line_in.lstrip(' ')
+            line_in_length = len(line_in_strip)
+            line_in_indent = len(line_in) - len(line_in_lstrip)
+            line_out = line_in # re-write line unchanged by default
+            if line_in_length>0 and not flag_update_done:
+                # Don't modify until we find the TOC block
+                if not flag_toc_found:
+                    if line_in_strip.startswith(".. toctree"):
+                        flag_toc_found = True
+                # ... once we have, don't modify until after the end of the parameter block ...
+                elif not flag_options_done:
+                    if not indent:
+                        indent = line_in_indent
+                    elif indent != line_in_indent:
+                        raise Exception(f"Indentation error at line {i_line}: {line_in_indent} spaces instead of {indent}; line_length={line_in_length}.")
+                    flag_line_is_option = line_in_strip.startswith(":")
+                    if not flag_line_is_option:
+                        flag_options_done = True
+                # ... don't modify anything before the end of the parameter block or after we have written the new entry
+                if flag_options_done and not flag_update_done:
+                    if line_in_indent==0:
+                        line_out = indent_entry(indent) + os.linesep + line_in
+                        flag_update_done = True
+            elif flag_options_done and not flag_update_done:
+                line_out = indent_entry(indent) + os.linesep + line_in
+                flag_update_done = True
+
+            print(line_out, end='')
 
 
 def print_instructions() -> None:
@@ -70,5 +102,5 @@ def print_instructions() -> None:
 
 if __name__ == "__main__":
     update_pyproject_toml()
-    update_documentation()
+    add_entry_to_docs_toc("CLI Documentation <content/cli.rst>")
     print_instructions()
