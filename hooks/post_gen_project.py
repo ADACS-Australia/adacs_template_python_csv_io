@@ -66,12 +66,12 @@ def add_entry_to_docs_toc(entry: str) -> None:
                 if indent < 0:
                     if line_indent > 0:
                         indent = line_indent
-                elif indent!=line_indent:
-                    DocsUpdateException(f"Indentation error at TOC line {i_line}: {line_indent} spaces instead of {indent}")
+                elif indent!=line_indent and line_indent>0:
+                    raise DocsUpdateException(f"Indentation error at TOC line {i_line+1}: {line_indent} spaces instead of {indent}")
 
         # Sanity checks
         if indent <=0:
-            DocsUpdateException(f"Indentation error in TOC: indent of {indent} determined.")
+            raise DocsUpdateException(f"Indentation error in TOC: invalid indent of {indent} determined.")
 
         # Insert new line into buffer, after last non-empty line
         buffer[last_line_index] = buffer[last_line_index] + indent_entry(indent) + os.linesep
@@ -82,41 +82,50 @@ def add_entry_to_docs_toc(entry: str) -> None:
 
     # Re-write the index.rst file with the given line added
     filename="{{cookiecutter | repo_path}}/docs/index.rst"
-    with fileinput.input(files=filename, inplace=True) as file:
-        flag_processing_toc = False
-        flag_update_done = False
-        indent = 0
-        buffer = []
-        for i_line, line_in in enumerate(file):
-            line_in_strip = line_in.strip()
-            line_in_lstrip = line_in.lstrip(' ')
-            line_in_length = len(line_in_strip)
-            line_in_indent = len(line_in) - len(line_in_lstrip)
-            line_out = line_in # re-write line unchanged by default
-            if line_in_length>0:
-                if line_in_strip.startswith(".."):
-                    if line_in_strip.lstrip(". ").startswith("toctree"):
-                        flag_processing_toc = True
-                    else:
+    try:
+        with fileinput.input(files=filename, inplace=True, backup='.bak') as file:
+            flag_processing_toc = False
+            flag_update_done = False
+            indent = 0
+            buffer = []
+            for i_line, line_in in enumerate(file):
+                line_in_strip = line_in.strip()
+                line_in_lstrip = line_in.lstrip(' ')
+                line_in_length = len(line_in_strip)
+                line_in_indent = len(line_in) - len(line_in_lstrip)
+                line_out = line_in # re-write line unchanged by default
+                if line_in_length>0:
+                    if line_in_strip.startswith(".."):
+                        if line_in_strip.lstrip(". ").startswith("toctree"):
+                            if flag_processing_toc:
+                                raise DocsUpdateException(f"Multiple insert points found in '{filename}.'")
+                            flag_processing_toc = True
+                        else:
+                            if flag_processing_toc:
+                                if flag_update_done:
+                                    raise DocsUpdateException(f"Multiple insert points found in '{filename}.'")
+                                write_toc(buffer)
+                                flag_update_done = True
+                            flag_processing_toc = False
+                    elif line_in_indent==0:
                         # If we were reading the toc but aren't now, write the modified toc
                         if flag_processing_toc:
                             if flag_update_done:
-                                DocsUpdateException(f"Multiple insert points found in '{filename}.'")
+                                raise DocsUpdateException(f"Multiple insert points found in '{filename}.'")
                             write_toc(buffer)
                             flag_update_done = True
                         flag_processing_toc = False
-                elif line_in_indent==0:
-                    # If we were reading the toc but aren't now, write the modified toc
-                    if flag_processing_toc:
-                        if flag_update_done:
-                            DocsUpdateException(f"Multiple insert points found in '{filename}.'")
-                        write_toc(buffer)
-                        flag_update_done = True
-                    flag_processing_toc = False
-            if flag_processing_toc:
-                buffer.append(line_in)
-            else:
-                print(line_out, end='')
+                if flag_processing_toc:
+                    buffer.append(line_in)
+                else:
+                    print(line_out, end='')
+    except DocsUpdateException as e:
+        os.remove(filename)
+        os.rename(filename + ".bak", filename)
+        raise DocsUpdateException("Could not update documentation.  File left unchanged.") from e
+    else:
+        os.remove(filename + ".bak")
+
 
 
 def print_instructions() -> None:
