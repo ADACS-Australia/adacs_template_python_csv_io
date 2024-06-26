@@ -7,17 +7,13 @@ This template takes the effort out of starting from a good place.
 cookiecutter gh:ADACS-Australia/adacs_template_python_base
 ```
 
-:::{note}
-See the Base [ADACS Python Template page](https://github.com/ADACS-Australia/adacs_template_python_base) for detailed instructions.
-:::
+See the [Base ADACS Python Template page](https://github.com/ADACS-Australia/adacs_template_python_base) for detailed instructions.
 
 ***...render this template on top of it...***
 ``` console
 cookiecutter -f gh:gbpoole/adacs_python_template
 ```
-:::{warning}
 Make sure any changes to your project have been committed first.
-:::
 
 ***...look at the changes that have been made, modify them as you see fit, and then commit them to the repository.***
 
