@@ -58,6 +58,16 @@ jobs:
           repository: 'ADACS-Australia/adacs_template_python_base'
           path: __adacs_template_python_base
 
+      # Set the path where the base template will be stored and move it there
+      - name: Set temporary path
+        run: echo "TEMP_DIR=$(mktemp -d)" >> $GITHUB_ENV
+
+      - name: Move base template
+        rum: mv __adacs_template_python_base $TMP_DIR
+
+      - name: Set path to new base template location
+        run: echo "BASE_TEMPLATE_PATH=$(echo $TMP_DIR/__adacs_template_python_base )" >> $GITHUB_ENV
+
       # Set-up dependencies
       - name: Check-out repo
         uses: actions/checkout@v3
@@ -121,10 +131,6 @@ jobs:
         run: |
           poetry check
           poetry lock --check
-
-      # Path where the base template gets cloned to
-      - name: Set path to base template location
-        run: echo "BASE_TEMPLATE_PATH=$(echo $GITHUB_WORKSPACE/__adacs_template_python_base )" >> $GITHUB_ENV
 
       # Run tests
       - name: Generate build
