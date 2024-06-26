@@ -55,7 +55,7 @@ jobs:
       - name: Clone base template
         uses: actions/checkout@v3
         with:
-          name: 'ADACS-Australia/adacs_template_python_base'
+          repository: 'ADACS-Australia/adacs_template_python_base'
 
       # Set-up dependencies
       - name: Check-out repo
