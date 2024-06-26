@@ -58,12 +58,12 @@ jobs:
           repository: 'ADACS-Australia/adacs_template_python_base'
           path: ${{ github.workspace }}/../adacs_template_python_base
 
-      # Set-up dependencies
-      - name: Check-out repo
-        uses: actions/checkout@v3
-        with:
-          clean: false
-          fetch-depth: 0 # Needed for tags to be fetched; see https://github.com/actions/checkout/issues/290
+      # # Set-up dependencies
+      # - name: Check-out repo
+      #   uses: actions/checkout@v3
+      #   with:
+      #     clean: false
+      #     fetch-depth: 0 # Needed for tags to be fetched; see https://github.com/actions/checkout/issues/290
 
       # Uncomment if you need mpi
       # - name: Set-up MPI
