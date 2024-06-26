@@ -63,10 +63,10 @@ jobs:
         run: echo "TEMP_DIR=$(mktemp -d)" >> $GITHUB_ENV
 
       - name: Move base template
-        run: mv __adacs_template_python_base $TMP_DIR
+        run: mv __adacs_template_python_base $TEMP_DIR
 
       - name: Set path to new base template location
-        run: echo "BASE_TEMPLATE_PATH=$(echo $TMP_DIR/__adacs_template_python_base )" >> $GITHUB_ENV
+        run: echo "BASE_TEMPLATE_PATH=$(echo $TEMP_DIR/__adacs_template_python_base )" >> $GITHUB_ENV
 
       # Set-up dependencies
       - name: Check-out repo
