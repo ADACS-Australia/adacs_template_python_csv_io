@@ -12,7 +12,7 @@ env:
   RTD_WEBHOOK_URL: ${{ secrets.RTD_WEBHOOK_URL }}
   RTD_WEBHOOK_TOKEN: ${{ secrets.RTD_WEBHOOK_TOKEN }}
   # Path where the base template gets cloned to
-  BASE_TEMPLATE_PATH: $GITHUB_WORKSPACE"/adacs_template_python_base"
+  BASE_TEMPLATE_PATH: ${{ GITHUB_WORKSPACE }}"/adacs_template_python_base"
 
 jobs:
 
