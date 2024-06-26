@@ -60,8 +60,7 @@ def bake_in_temp_dir(
 
     # Silence printing of base instructions
     extra_context_base["__test"] = True
-
-    print("XXXXXXXXXXX:", type(base_template_path), base_template_path)
+    extra_context_template["__test"] = True
 
     # Bake the base template
     result = cookies.bake(

@@ -147,7 +147,8 @@ def print_instructions() -> None:
 
     # Render the file as Markdown with Rich
     console = Console()
-    console.print(Markdown(lines))
+    if not {{ cookiecutter.__test }}:
+        console.print(Markdown(lines))
 
 
 if __name__ == "__main__":
