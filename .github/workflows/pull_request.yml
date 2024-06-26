@@ -107,13 +107,22 @@ jobs:
           poetry check
           poetry lock --check
 
-      # Run tests
-      - name: Generate build
-        run: poetry build
-
       # Path where the base template gets cloned to
       - name: Set path to base template location
         run: echo "BASE_TEMPLATE_PATH=$(echo $GITHUB_WORKSPACE/adacs_template_python_base )" >> $GITHUB_ENV
+
+      - name: debugging
+        run: |
+          echo A
+          ls /home/runner/work/adacs_template_python_csv_io/adacs_template_python_csv_io/adacs_template_python_base 
+          echo B
+          ls /home/runner/work/adacs_template_python_csv_io/adacs_template_python_csv_io/
+          echo C
+          ls /home/runner/work/adacs_template_python_csv_io/a
+
+      # Run tests
+      - name: Generate build
+        run: poetry build
 
       - name: Code tests
         run: poetry run pytest
