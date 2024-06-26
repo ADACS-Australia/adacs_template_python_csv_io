@@ -113,7 +113,7 @@ jobs:
 
   # Path where the base template gets cloned to
       - name: Code tests
-        run: poetry run BASE_TEMPLATE_PATH=$GITHUB_WORKSPACE"/adacs_template_python_base" pytest
+        run: BASE_TEMPLATE_PATH=$GITHUB_WORKSPACE"/adacs_template_python_base" poetry run pytest
 
       - name: Documentation build test
         run: poetry run make -f docs/Makefile docs
