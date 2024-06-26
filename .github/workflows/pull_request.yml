@@ -114,11 +114,11 @@ jobs:
       - name: debugging
         run: |
           echo A
-          ls /home/runner/work/adacs_template_python_csv_io/adacs_template_python_csv_io/adacs_template_python_base 
+          ls /home/runner/work/
           echo B
-          ls /home/runner/work/adacs_template_python_csv_io/adacs_template_python_csv_io/
+          ls /home/runner/work/adacs_template_python_csv_io/
           echo C
-          ls /home/runner/work/adacs_template_python_csv_io/a
+          ls /home/runner/work/adacs_template_python_csv_io/adacs_template_python_csv_io
 
       # Run tests
       - name: Generate build
