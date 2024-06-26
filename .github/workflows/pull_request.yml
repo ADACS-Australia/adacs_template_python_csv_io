@@ -58,12 +58,25 @@ jobs:
           repository: 'ADACS-Australia/adacs_template_python_base'
           path: __adacs_template_python_base
 
-      # Set-up dependencies
-      - name: Check-out repo
-        uses: actions/checkout@v3
-        with:
-          clean: false
-          fetch-depth: 0 # Needed for tags to be fetched; see https://github.com/actions/checkout/issues/290
+      # # Set-up dependencies
+      # - name: Check-out repo
+      #   uses: actions/checkout@v3
+      #   with:
+      #     clean: false
+      #     fetch-depth: 0 # Needed for tags to be fetched; see https://github.com/actions/checkout/issues/290
+
+      - name: debugging
+        run: |
+          echo Z
+          echo $GITHUB_WORKSPACE
+          ls $GITHUB_WORKSPACE
+          echo A
+          ls /home/runner/work/
+          echo B
+          ls /home/runner/work/adacs_template_python_csv_io/
+          echo C
+          ls /home/runner/work/adacs_template_python_csv_io/adacs_template_python_csv_io
+
 
       # Uncomment if you need mpi
       # - name: Set-up MPI
@@ -112,18 +125,6 @@ jobs:
       # Path where the base template gets cloned to
       - name: Set path to base template location
         run: echo "BASE_TEMPLATE_PATH=$(echo $GITHUB_WORKSPACE/__adacs_template_python_base )" >> $GITHUB_ENV
-
-      - name: debugging
-        run: |
-          echo Z
-          echo $GITHUB_WORKSPACE
-          ls $GITHUB_WORKSPACE
-          echo A
-          ls /home/runner/work/
-          echo B
-          ls /home/runner/work/adacs_template_python_csv_io/
-          echo C
-          ls /home/runner/work/adacs_template_python_csv_io/adacs_template_python_csv_io
 
       # Run tests
       - name: Generate build
