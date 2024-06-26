@@ -113,6 +113,9 @@ jobs:
 
       - name: debugging
         run: |
+          echo Z
+          echo $GITHUB_WORKSPACE
+          ls $GITHUB_WORKSPACE
           echo A
           ls /home/runner/work/
           echo B
