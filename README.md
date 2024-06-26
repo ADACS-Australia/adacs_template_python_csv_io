@@ -1,37 +1,27 @@
-# Starting a new Python codebase?
+# Looking to add some code for processing Comma-Separated Value (CSV) files to your ADACS templated Python project?
 This template takes the effort out of starting from a good place.
 
 ## Getting Started
-***Make sure Cookiecutter is installed...***
+***Make sure you have started a new Python project with the Base ADACS Python template***
 ``` console
-pip install cookiecutter
+cookiecutter gh:ADACS-Australia/adacs_template_python_base
 ```
-*(or better yet, use [pipx](https://pypa.github.io/pipx/))*
+
+:::{note}
+See the Base [ADACS Python Template page](https://github.com/ADACS-Australia/adacs_template_python_base) for detailed instructions.
+:::
+
+***...render this template on top of it...***
 ``` console
-pipx install cookiecutter
+cookiecutter -f gh:gbpoole/adacs_python_template
 ```
-***...use it to render the project...***
-``` console
-cookiecutter gh:gbpoole/adacs_python_template
+:::{warning}
+Make sure any changes to your project have been committed first.
+:::
 
-```
-***...answer the questions...***
-
-![ADACS Python Template Questions](https://github.com/gbpoole/adacs_python_template/blob/main/docs/assets/adacs_python_template_cookiecutter_questions.png?raw=true)
-
-***...and configure the services you need using [these instructions](https://adacs-python-template.readthedocs.io/en/latest/content/configuring_services.html).***
+***...look at the changes that have been made, modify them as you see fit, and then commit them to the repository.***
 
 ## What do you get for this?
 ***A codebase that eases collaboration and automatically:***
-* Ensures that all commits on the main branch and released versions build correctly and pass all unit tests
-* Enforces code formatting and linting policies
-* Manages code and release versioning
-* (optionally) publishes your code to PyPI so people can easilly install it
-* (optionally) updates, builds and publishes documentation to *Read the Docs*.
-
-***The codebase is also initialised with some code providing:***
 * A simple ASCII file read/process/write workflow
 * A CLI interface, providing simple and self-documenting terminal access to the codebase for your users
-
-Modify them for a quick start on some working code or delete them if not needed.  They will illustrate some best practices with this code base
-regardless.
