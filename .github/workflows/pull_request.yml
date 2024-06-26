@@ -72,21 +72,7 @@ jobs:
       - name: Check-out repo
         uses: actions/checkout@v3
         with:
-          clean: false
           fetch-depth: 0 # Needed for tags to be fetched; see https://github.com/actions/checkout/issues/290
-
-      - name: debugging
-        run: |
-          echo Z
-          echo $GITHUB_WORKSPACE
-          ls $GITHUB_WORKSPACE
-          echo A
-          ls /home/runner/work/
-          echo B
-          ls /home/runner/work/adacs_template_python_csv_io/
-          echo C
-          ls /home/runner/work/adacs_template_python_csv_io/adacs_template_python_csv_io
-
 
       # Uncomment if you need mpi
       # - name: Set-up MPI
