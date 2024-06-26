@@ -1,15 +1,15 @@
 [tool.poetry]
-name = "adacs_python_template"
+name = "adacs_template_python_csv_io"
 version = "0.0.0-dev" # Just a place holder; package version is managed by the dynamic-versioning plugin & git tags
 description = "A Cookiecutter template for instantiating Python projects"
 authors = [ "ADACS" ]
 license = "MIT-expat"
 readme = "README.md"
 packages = [
-    { include = "adacs_python_template", from = "python" }
+    { include = "adacs_template_python_csv_io", from = "python" }
 ]
-homepage = "https://github.com/gbpoole/adacs_python_template"
-documentation = "https://adacs_python_template.readthedocs.io/en/latest/"
+homepage = "https://github.com/ADACS-Australia/adacs_template_python_csv_io"
+documentation = "https://adacs_template_python_csv_io.readthedocs.io/en/latest/"
 
 [tool.poetry.dependencies]
 python = " >=3.11"
@@ -62,7 +62,7 @@ mypy_path = "$MYPY_CONFIG_FILE_DIR/tests"
 
 [tool.black]
 extend-exclude = [
-  '\{\{cookiecutter \| repo_name\}\}', # checked by pytest
+  '\{\{cookiecutter \| repo_path\}\}', # checked by pytest
   'hooks' # These files are treated as Jinja2 templates and may have invalid Python code
 ]
 
@@ -77,7 +77,7 @@ ignore = [
     "E501", # line length violations (let Black handle this)
 ]
 extend-exclude = [
-  '\{\{cookiecutter \| repo_name\}\}', # checked by pytest
+  '\{\{cookiecutter \| repo_path\}\}', # checked by pytest
   'hooks' # These files are treated as Jinja2 templates and may have invalid Python code
 ]
 
