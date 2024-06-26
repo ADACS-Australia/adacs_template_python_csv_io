@@ -1,13 +1,15 @@
 [tool.poetry]
-name = "adacs_python_template"
+name = "adacs_template_python_csv_io"
 version = "0.0.0-dev" # Just a place holder; package version is managed by the dynamic-versioning plugin & git tags
-description = "A Cookiecutter template for generating python projects"
+description = "A Cookiecutter template for instantiating Python projects"
 authors = [ "ADACS" ]
 license = "MIT-expat"
 readme = "README.md"
-packages = [ ]
-homepage = "https://github.com/gbpoole/adacs_python_template"
-documentation = "https://adacs_python_template.readthedocs.io/en/latest/"
+packages = [
+    { include = "adacs_template_python_csv_io", from = "python" }
+]
+homepage = "https://github.com/ADACS-Australia/adacs_template_python_csv_io"
+documentation = "https://adacs_template_python_csv_io.readthedocs.io/en/latest/"
 
 [tool.poetry.dependencies]
 python = " >=3.11"
@@ -17,6 +19,7 @@ sphinx-rtd-theme = { version = "1.2.0", optional = true }
 myst-parser = { version = "^1.0.0", optional = true }
 pre-commit = { version = "^3.0.4", optional = true }
 pytest = { version = "^7.0", optional = true }
+pytest-cov = { version = "^5.0.0", optional = true }
 black = { version = "^22.10.0", optional = true }
 ruff = { version = "^0.0.243", optional = true}
 sphinx-click = { version = "^4.4.0", optional = true }
@@ -24,6 +27,9 @@ mypy = { version = "^1.1.1", optional = true }
 sphinx-copybutton = { version = "^0.5.1", optional = true }
 pytest-mock = "^3.11.1"
 rich = "^13.5.2"
+cookiecutter = "^2.5.0"
+pytest-cookies = "^0.7.0"
+tomlkit = "^0.12.5"
 
 [tool.poetry.extras]
 docs = [
@@ -35,6 +41,7 @@ docs = [
 ]
 dev = ["pre-commit",
        "pytest",
+       "pytest-cov",
        "mypy",
        "black",
        "ruff",
@@ -42,7 +49,7 @@ dev = ["pre-commit",
 
 [tool.pytest.ini_options]
 pythonpath = ["./tests", "./"] # relative to root directory
-addopts = "--ignore={{cookiecutter.__project_slug}}"
+addopts = '--ignore="{{cookiecutter | repo_path}}"'
 
 # This configures the Poetry plugin which enables dynamic versioning via the repo tags
 # Note the changes that are also needed to the [build-system] config below.
@@ -55,6 +62,12 @@ style = "semver"
 ignore_missing_imports = true
 mypy_path = "$MYPY_CONFIG_FILE_DIR/tests"
 
+[tool.black]
+extend-exclude = [
+  '\{\{cookiecutter \| repo_path\}\}', # checked by pytest
+  'hooks' # These files are treated as Jinja2 templates and may have invalid Python code
+]
+
 [tool.ruff]
 line-length = 88 # to match Black
 select = [
@@ -65,6 +78,11 @@ select = [
 ignore = [
     "E501", # line length violations (let Black handle this)
 ]
+extend-exclude = [
+  '\{\{cookiecutter \| repo_path\}\}', # checked by pytest
+  'hooks' # These files are treated as Jinja2 templates and may have invalid Python code
+]
+
 
 # Ignore `E402` (import violations) in all `__init__.py` files, and in `path/to/file.py`.
 [tool.ruff.per-file-ignores]
