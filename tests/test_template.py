@@ -16,13 +16,14 @@ test_these_changes_to_default_parameters = [
 
 
 @pytest.fixture(params=test_these_changes_to_default_parameters)
-def bake_path(cookies, request):
+def bake_path(cookies, base_template_path, request):
     extra_context_base = request.param[0]
     extra_context_template = request.param[1]
     exit_code_expected = request.param[2]
     exception_expected = request.param[3]
     with bake_in_temp_dir(
         cookies,
+        base_template_path,
         extra_context_base=extra_context_base,
         extra_context_template=extra_context_template,
     ) as result:
@@ -33,16 +34,16 @@ def bake_path(cookies, request):
 
 
 def test_bake_and_run_tests(bake_path):
-    run_inside_dir("pytest", bake_path) == 0
+    assert run_inside_dir("pytest", bake_path) == 0
 
 
 def test_template_make_docs(bake_path):
-    run_inside_dir("make docs", bake_path) == 0
+    assert run_inside_dir("make docs", bake_path) == 0
 
 
 def test_template_run_black(bake_path):
-    run_inside_dir("black .", bake_path) == 0
+    assert run_inside_dir("black .", bake_path) == 0
 
 
 def test_template_run_ruff(bake_path):
-    run_inside_dir("ruff .", bake_path) == 0
+    assert run_inside_dir("ruff .", bake_path) == 0

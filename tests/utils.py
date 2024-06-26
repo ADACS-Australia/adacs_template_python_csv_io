@@ -47,7 +47,10 @@ def inside_dir(path: Path):
 
 @contextmanager
 def bake_in_temp_dir(
-    cookies: Cookies, extra_context_base={}, extra_context_template={}
+    cookies: Cookies,
+    base_template_path,
+    extra_context_base={},
+    extra_context_template={},
 ):
     """
     Delete the temporal directory that is created when executing the tests
@@ -58,9 +61,11 @@ def bake_in_temp_dir(
     # Silence printing of base instructions
     extra_context_base["__test"] = True
 
+    print("XXXXXXXXXXX:", type(base_template_path), base_template_path)
+
     # Bake the base template
     result = cookies.bake(
-        template="/Users/gpoole/my_code/adacs_python_template",
+        template=base_template_path,
         extra_context=extra_context_base,
     )
 

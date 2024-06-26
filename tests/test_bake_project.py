@@ -2,9 +2,9 @@ from utils import bake_in_temp_dir
 import pathlib
 
 
-def test_bake_with_defaults(cookies):
+def test_bake_with_defaults(cookies, base_template_path):
 
-    with bake_in_temp_dir(cookies) as result:
+    with bake_in_temp_dir(cookies, base_template_path) as result:
         assert result.project_path.is_dir()
         assert result.exit_code == 0
         assert result.exception is None
