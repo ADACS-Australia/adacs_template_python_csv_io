@@ -111,9 +111,12 @@ jobs:
       - name: Generate build
         run: poetry build
 
-  # Path where the base template gets cloned to
+      # Path where the base template gets cloned to
+      - name: Set path to base template location
+        run: echo "BASE_TEMPLATE_PATH=$(echo $GITHUB_WORKSPACE/adacs_template_python_base )" >> $GITHUB_ENV
+
       - name: Code tests
-        run: BASE_TEMPLATE_PATH=$GITHUB_WORKSPACE"/adacs_template_python_base" poetry run pytest
+        run: poetry run pytest
 
       - name: Documentation build test
         run: poetry run make -f docs/Makefile docs
