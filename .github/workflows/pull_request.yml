@@ -118,6 +118,12 @@ jobs:
           poetry check
           poetry lock --check
 
+      # Set-up some dummy git credentials so the tests (which use git) will run
+      - name: Set-up git credentials
+        run: |
+          git config --global user.email "git@user.org"
+          git config --global user.name "Git, User"
+
       # Run tests
       - name: Generate build
         run: poetry build
