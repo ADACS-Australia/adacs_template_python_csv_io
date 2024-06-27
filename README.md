@@ -11,11 +11,11 @@ See the [Base ADACS Python Template page](https://github.com/ADACS-Australia/ada
 
 ***...render this template on top of it...***
 ``` console
-cookiecutter -f gh:gbpoole/adacs_python_template
+cookiecutter -f gh:ADACS-Australia/adacs_template_python_csv_io
 ```
 Make sure any changes to your project have been committed first.
 
-***...look at the changes that have been made, modify them as you see fit, and then commit them to the repository.***
+***...give the path to your previously rendered Base Template project (absolute or relative), look at the changes that have been made, modify them as you see fit, and then commit them to the repository.***
 
 ## What do you get for this?
 ***A codebase that eases collaboration and automatically:***
