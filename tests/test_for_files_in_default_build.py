@@ -2,7 +2,7 @@ from utils import bake_in_temp_dir
 import pathlib
 
 
-def test_bake_with_defaults(cookies, base_template_path):
+def test_for_files_in_default_build(cookies, base_template_path):
 
     with bake_in_temp_dir(cookies, base_template_path) as result:
         assert result.project_path.is_dir()
