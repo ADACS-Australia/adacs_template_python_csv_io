@@ -63,13 +63,23 @@ ignore_missing_imports = true
 mypy_path = "$MYPY_CONFIG_FILE_DIR/tests"
 
 [tool.black]
+extend-exclude = '''
+^/(
+  (
+    '\{\{cookiecutter \| repo_path\}\}', # checked by pytest
+    'hooks'                              # These files are treated as Jinja2 templates and may have invalid Python code
+  )/
+)
+'''
+
+[tool.ruff]
+line-length = 88 # to match Black
 extend-exclude = [
   '\{\{cookiecutter \| repo_path\}\}', # checked by pytest
   'hooks' # These files are treated as Jinja2 templates and may have invalid Python code
 ]
 
-[tool.ruff]
-line-length = 88 # to match Black
+[tool.ruff.lint]
 select = [
     "E",
     "F",
@@ -78,17 +88,13 @@ select = [
 ignore = [
     "E501", # line length violations (let Black handle this)
 ]
-extend-exclude = [
-  '\{\{cookiecutter \| repo_path\}\}', # checked by pytest
-  'hooks' # These files are treated as Jinja2 templates and may have invalid Python code
-]
 
 
 # Ignore `E402` (import violations) in all `__init__.py` files, and in `path/to/file.py`.
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402"]
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "numpy"
 
 [build-system]
