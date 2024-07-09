@@ -31,4 +31,4 @@ def test_parameter_grid(bake_path):
     assert run_inside_dir("black .", bake_path) == 0
 
     # Check code linting
-    assert run_inside_dir("ruff .", bake_path) == 0
+    assert run_inside_dir("ruff check .", bake_path) == 0

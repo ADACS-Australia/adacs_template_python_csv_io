@@ -1,10 +1,10 @@
 import os
 import pytest
 import tempfile
+from pathlib import Path
 from subprocess import CalledProcessError
-from utils import run_inside_dir
 from test_parameter_grid import test_these_changes_to_default_parameters
-from utils import bake_in_temp_dir
+from utils import bake_in_temp_dir, run_inside_dir
 
 # Check to see if a local repo is indicated by the environment, or use the GitHub repo
 # (this is useful for workflows where we don't have to deal with identity when cloning the repo for testing)
@@ -45,3 +45,7 @@ def bake_path(cookies, base_template_path, request):
         assert result.exit_code == exit_code_expected
         assert result.exception is exception_expected
         yield result.project_path
+
+@pytest.fixture(scope="session")
+def test_path():
+    yield Path(os.path.dirname(os.path.dirname(__file__)))
