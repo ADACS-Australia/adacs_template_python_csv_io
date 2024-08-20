@@ -16,10 +16,7 @@ test_these_changes_to_default_parameters = [
 
 def test_parameter_grid(bake_path):
     # Install the project so that the following tools can run
-    assert (
-        run_inside_dir('poetry install --no-interaction --extras "docs dev"', bake_path)
-        == 0
-    )
+    assert run_inside_dir("poetry install --no-interaction", bake_path) == 0
 
     # Run unit tests
     assert run_inside_dir("pytest", bake_path) == 0
