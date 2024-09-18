@@ -7,13 +7,6 @@ ENV HOME=/home/pytest
 ENV USERNAME=pytest
 ENV PACKAGE_ROOT ${HOME}/package
 
-ENV POETRY_NO_INTERACTION=1
-ENV POETRY_VIRTUALENVS_CREATE=0
-ENV POETRY_CACHE_DIR=/tmp/poetry_cache
-
-# Install poetry as root to make it easy to access as USERNAME
-RUN pip install poetry
-
 # Create user USERNAME
 RUN mkdir -p ${HOME} && \
     useradd --home-dir ${HOME} ${USERNAME} && \
@@ -29,26 +22,33 @@ RUN mkdir -p ${HOME} && \
 USER ${USERNAME}
 WORKDIR ${HOME}
 
-################
-# Configure git 
-################
-RUN git config --global user.email "docker@test.com"
-RUN git config --global user.name "Docker test"
-
-RUN python -m virtualenv venv && \
-    . venv/bin/activate
+##################################################
+# Create a virtual env and install poetry into it
+##################################################
+ENV POETRY_NO_INTERACTION=1
+ENV POETRY_VIRTUALENVS_CREATE=0
+ENV POETRY_CACHE_DIR=/tmp/poetry_cache
+RUN python -m venv venv && \
+    . venv/bin/activate && \
+    pip install poetry
 
 ################################################################
 # Copy and install Poetry dependencies (but not the actual 
 # application, which will get installed by the entry_point 
-# script when we start the container)
+# script when we start the container).  Clear the cache after
+# to lighten the container.
 ################################################################
 COPY pyproject.toml poetry.lock .
 RUN . venv/bin/activate && \
     poetry install --no-root --compile && \
     rm -rf ${POETRY_CACHE_DIR} && \
-    rm pyproject.toml && \
-    mv poetry.lock ${HOME}/poetry.lock.image
+    rm pyproject.toml
+
+#################################################3
+# Make a copy of the lock file so we can check for
+# changes in the entry script (below).
+#################################################3
+RUN mv poetry.lock ${HOME}/poetry.lock.image
 
 ##########################
 # Set-up the entry script
