@@ -19,6 +19,17 @@ class DocsUpdateException(Exception):
         return f"{self._message}"
 
 
+def install() -> None:
+    """Install the rendered project into its virtual environment
+
+    Parameters
+    ----------
+    venv_type : str
+        String specifying how the virtual environment is being supported
+    """
+    result = subprocess.run(["poetry", "install", "--no-interaction"])
+
+
 def update_pyproject_toml(destination_table: List, key: str, val: str) -> None:
     """Add to the pyproject.toml file an entry of the form:
     [tool.poetry.scripts]
@@ -170,4 +181,5 @@ if __name__ == "__main__":
         "{{ cookiecutter | package_name }}.cli:cli",
     )
     add_entry_to_docs_toc("CLI Documentation <content/cli.rst>")
+    install()
     print_instructions()
