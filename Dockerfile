@@ -5,13 +5,14 @@ FROM python:3.11-buster
 
 ENV HOME=/home/pytest
 ENV USERNAME=pytest
+ENV PACKAGE_ROOT ${HOME}/package
+
 ENV POETRY_NO_INTERACTION=1
 ENV POETRY_VIRTUALENVS_CREATE=0
 ENV POETRY_CACHE_DIR=/tmp/poetry_cache
-ENV PACKAGE_ROOT ${HOME}/package
 
 # Install poetry as root to make it easy to access as USERNAME
-RUN pip install poetry==1.4.2
+RUN pip install poetry
 
 # Create user USERNAME
 RUN mkdir -p ${HOME} && \
